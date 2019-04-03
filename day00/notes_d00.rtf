@@ -1,0 +1,283 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww14680\viewh25460\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 C++ Syntax:\
+
+\b0 	www.cplusplus.com\
+	-C++98 ans C++11 (we use 98 for now)\
+
+\b - Namespace
+\b0 \
+	Group together symbols and functions into a \'91bag\'92 (currently using files)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Namespace foo \{\
+		int x;\
+		int y;\
+		int f(void) \{return 3\};\
+	\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+* can be nested - can alias at top of page for shorter access\
+Scope resolution operator:\
+	foo::x\
+	foo::f()\
+For actual globals, we sometimes use \'93::g_x\'94\
+Standard namespace (to find all stdlib functions)\
+	std::\
+\
+
+\b - Stdio streams
+\b0 \
+	input/output, err output\
+In C: used \'93write()\'94 and \'93read()\'94;\
+C++: \'93cin\'94 \'93cout\'94 \'93<<\'93 \'93>>\'94\
+\'93<<\'93 - redirect data\
+std::endl -carriage return\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+#include <iostream>\
+	char buff[BUF_SIZE]\
+\
+	std::cout << \'93Helloworld\'94 << std::endl\
+	std::cout << \'93Input a word:\'94\
+	std::cin >> buff;\
+	std::cout << \'93you entered: [\'94 << buff << \'93]\'94 << std::endl;\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b - Class and instance
+\b0 \
+sample.class.hpp\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	#ifndef SAMPLE_CLASS_H\
+	#define SAMPLE_CLASS_H\
+	class sample \{\
+	public:\
+		sample(void);\
+		~sample(void);\
+	\};\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+(If missing \'93;\'94 in class, will get large error messages in strange places)\
+Constructor and destructor(~)\
+	Functions with no return type (void)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	#include \'93sample.class.hpp\'94\
+	sample::sample(void) \{\
+		std::cout << \'93Constructor called\'94 << std::endl;\
+	\}\
+	sample::~sample(void) \{\
+		std::cout << \'93Destructor called\'94 << std::endl;\
+	\}\
+	int main() \{\
+		sample instance;  -------called the constructor\
+		return 0;               -------all local variables destructed, destructor called\
+	\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b - Member attributes and member functions
+\b0 \
+	(variables and functions in class to make it more useful)\
+In hpp file:\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	class sample \{\
+	public:\
+		int foo;       \'97\'97\'97variable in each of my class\
+		\
+		sample(void);\
+		~sample(void);\
+		void f(void);      \'97-add a function to class\
+	\};\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+In cpp file:\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	void sample::f(void) \{\
+		std::cout << \'93Member function f called\'94 << std::endl;\
+	\}\
+\
+	int main() \{\
+		sample instance;\
+		\
+		instance::foo = 42;        \'97\'97(if foo is pointer, use instance::foo->42)\
+		instance::f();\
+		return 0;\
+	\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b - This
+\b0  (Instance pointer, self)\
+How to refer to the current class from the code in the class?\
+In cpp file: (constructor)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	sample::sample(void) \{\
+		std::cout << \'93Constructor called\'94 << std::endl;\
+		\
+		this->foo = 42;     \'97This is a pointer to current instance of class\
+		std::cout << \'93this->foo = \'93<< this->foo;\
+		this->bar();\
+	\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b - Initialization list
+\b0 \
+Constructors taking parameters\
+n hpp file:\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	class sample \{\
+	public:\
+		int n;       \'97\'97\'97variable in each of my class\
+		\
+		sample(void);\
+		~sample(void);\
+		void f(int x);      \'97-add a function to class\
+	\};\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+In cpp file: (constructor)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	sample::sample(int x) \{\
+		this->n = x;		\
+	\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Or: (initialization list)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	sample::sample(int x) : n(x) \{\
+	XXXX\
+	\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b - Const (constants)\
+	
+\b0 Make as many constants instead of variables as possible\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Class sample \{\
+	Public:\
+		float const c;    \'97constant float\
+		int n;               \'97variable\
+		sample(float const c2);\
+		~sample(void);\
+		void function(void) const;	\'97constant function (function won\'92t alter the current instance of the class)\
+	\};\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+in C: Constant cannot be assigned other than initialization.\
+What if we want to initialize later? -initialization list!\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	sample::sample(float const f) : c(f))\
+	void sample::function(void) const \{\
+		this->n = 42;		\'97this will error since the function has const;\
+	\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b - excapsulation (priviate, public)
+\b0 \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	class sample \{\
+	public:\
+		Attributes and functions accessible outside the class\
+	priviate:\
+		Accessible only inside the class (e.g. called by other functions in the class)\
+			(usually have \'93_\'94 pre-fix: _private_function, _private_attribute)\
+	\};\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Constructor and destructor should be in the public (for now)\
+*should expose only the attributes and functions necessary (and should be accessed by user)\
+\
+
+\b - structs (vs. classes)\
+
+\b0 	C++ has structures similar to C (and extended)\
+struct and classes work the same way, with attributes & functions\
+Difference:\
+	
+\b class:
+\b0  have to have public and private (default private)\
+	
+\b struct:
+\b0  default public\
+*should use classes and make only the necessary public\
+\
+
+\b - accessors
+\b0  (access private attributes, or getters/setters)\
+	little functions to get/set value of attributes in classes when the attributes are private\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+int	getfoo(void) const;		\'97need to be const because getter is read-only\
+void 	setfoo(int v);		\'97assigns value of variable (probably with conditions)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b - comparisons
+\b0  (of instances of given class)\
+Problem in C:\
+	comparisons (\'93==\'93) don\'92t work for two structures of the same type;\
+Solution: compare function\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+In class public:\
+	int compare(sample *other) const;\
+In cpp:\
+	int sample::compare(sample *other) const \{\
+		if (this->_foo < other->getfoo();\
+			return (-1);\
+		else if (this->_foo > other->getfoo();\
+			return (1);\
+		return (0);\
+	\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b - static
+\b0  (non-member) attributes and functions in a class\
+	*member functions/attributes: classes needs to be instantiated for us to use\
+		different in each instance;\
+	*non-member: exists at class level rather than instance level\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+In class public/private:\
+	static int 	numInsts;  \'97number of instances made\
+	static int 	f(void);       \'97cannot access \'93this->\'94 pointer\
+In cpp:\
+	int sample::_numInsts = 0;	\'97only way to initialize the static attribute\
+	int sample::f(void) \{\
+		return (sample::_numInsts);\
+	\}\
+	sample::sample(void) \{\
+		sample::_numInst++;\
+	\}\
+	sample::~sample(void) \{\
+		sample::_numInst\'97;\
+	\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b - pointers to member function / attributes
+\b0  (impossible to do same as C)\
+In C: pointers & pointers on functions\
+New: pointers on members and member functions\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	int main() \{\
+		sample Inst;				\'97sample on stack\
+		sample *instp = &inst;		\'97pointer on stack\
+\
+		int sample::*p = NULL;		\'97pointer pointing to an integer member of sample class;\
+		p = &sample::foo;		\'97set the pointer p to member foo;\
+		Inst.*p = 21;			\'97set _foo to 21; (\'93.*\'94 operator)\
+		instp->*p = 42; 		\'97same with pointers\
+\
+		void (sample::*f)(void) const;	\'97pointer to member function in class\
+		f = &sample::bar;		\'97set function to point at \'93bar\'94 function\
+		(instance.*f)()		\'97execute the function pointed to\
+		(instancep->*f)()		\'97same with pointer to class \
+		\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Used in dispatchers or similar (use pointers on member functions to select the right one etc.)\
+\
+
+\b Key points:
+\b0 \
+	- Write code as constant as possible\
+	- initialization list\
+}

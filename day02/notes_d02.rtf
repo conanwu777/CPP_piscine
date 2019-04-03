@@ -1,0 +1,108 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww15740\viewh25460\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 Infomation: 
+\b0 Unicorns in the building\
+\
+
+\b Ad-hoc polymorphism
+\b0  (function overloading)\
+	-many different functions with same name, taking different parameters\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	void f(char const c) const;\
+	void f(int const c) const;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	void f(float const c) const;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	void f(Sample const & i) const;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 *Function will give different outputs based on input type\
+\
+\
+
+\b Operator overload
+\b0 \
+	extends c++ syntax by defining new operators (overload function corresponding to operator)\
+*C++ is always passing the current pointer to all functions in class.\
+	infix notation: 1 + 1\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 		for classes: 1.+(1);\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	prefix (functional) notation: +(1, 1)		-key to understand operator overloading\
+	postfix (polish reverse): 1 1 +;		-stack calculations\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Class Integer \{\
+Public:\
+	Integer(int const n);\
+	~Integer(void);\
+	int		getValue (void) const;\
+	Integer	&operator=(Integer const & rhs);		\'97assignment does change current\
+				\'97need to return a reference rather than (void) because this way\
+				we can evaluate chained statements such as \'93a = b = c = d\'94;\
+	Integer	operator+(Integer const & rhs) const;	\'97addition doesn\'92t change current\
+					\'97does not need references because no change to current;\
+Private:\
+	int	_n;\
+\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 *look-up: pre-incrementation and post-incrementation (need a parameter to distinguish)\
+To use, write like normal operators, e.g. Sample1 + Sample2; Sample1 = Sample2 etc.\
+Note: \'93+\'94 returns a (useless) copy of the value since it cannot modify the instance\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+What if we want to overload things like \'93<<\'93\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 Std::stream & operation << (std::stream & o, Integer const & rhs);\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 Allows you to do powerful things, especially in arithematic operations;\
+ *overload needs to be natural\
+ *need to be consistent with the usual usage of the operator\
+ *Don\'92t do it (use cases are rare)\
+E.g. functors;\
+\
+
+\b Canonical form of class
+\b0 \
+	Unified use of all classes\
+*default constructor;\
+*copy constructor - take an instance of the class to make a copy of this class;\
+*equals(virtual assignment) operator\
+*destructor\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 Class Sample \{\
+Public:\
+	Sample(void);\
+	Sample(int const n);\
+	Sample(Sample const & src);\
+	~Sample(void);\
+\
+	Sample & operator=(Sample const & rhs);	\
+\
+	int nbr;\
+	\'85.\
+\}\
+Sample::Sample(void) : nbr(0) \{\}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 Sample::Sample(int const n) : nbr(n) \{\}\
+Sample::Sample(Sample const & src) \{ *this = src; \}\
+Sample::~Sample(void) \{\}\
+Sample & Sample::operator=(Sample const & rhs) \{\
+	if (this != &rhs)\
+		this->nbr = rhs,getNbr();\
+	return (*this); \}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97}

@@ -1,0 +1,86 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww14040\viewh25460\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 Replacing malloc() and free();
+\b0 \
+In C++, it\'92s okay with int, float etc. but bad for classes and standard library, similar for free\
+- They don\'92t call constructor/destructors!\
+Instead: use 
+\b new
+\b0  and 
+\b delete
+\b0 \
+in main: (class student)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	student *jim = new student(\'93login2\'94);    \'97malloced new student\
+	delete jim;				\'97freed student\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Mallocing array of student pointers: (only works for constructors which take void)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	student *students = new student[42];\
+	delete [ ] students;\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b References:\
+
+\b0 	Alias for a variable, comparable to pointers;\
+	- pointer which is constant and always un-referenced, never void\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	int num = 42;\
+	int	*ptr = &num;		\'97pointer\
+	int	&ref = num;		\'97reference, cannot be changed after initialized\
+						cannot create uninitialized reference\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+*To use reference, just write ref instead of *ptr\
+*can do ref = 42 to change the value\
+\
+Side note:\
+	*str += \'93abc\'94 \'97\'97concatenate the string\
+To pull out a value for manipulation outside if the function:\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	void  function1(std::string *str)\
+		use *str\
+	void fu	nction2(std::string &str)\
+		use str\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+When using:\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	function1(&str);\
+	function2(str);\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Const: void function3(std::string const &str)\
+In general: references cannot move and has to point to something that exists at time reference is created\
+\
+
+\b Filestream:\
+	
+\b0 streams to deal with files #include<fstream>\
+ifstream : input file stream\
+ofstream : output files stream\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+#include<fstream>\
+	Unsigned int	n1;\
+	Unsigned int n2;\
+\
+	std::ifstream ifs(\'93filename\'94);\
+		- creates input stream, open the filename given, link to stream\
+	Ifs >> n1 >> n2;\
+	Ifs.close();\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Alternatively, we can create ifs, then ifs.open;\
+Can also read strings, floats, line-by-line, etc.\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Std::ofstream ofs(\'93test.out\'94);\
+\
+	ofs << \'93XXXXX\'94 << std::end;\
+	ofs.close;\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Other useful streams:\
+Strstreams, istream, istream;\
+	- equivalent to sscanf() and sprintf();}

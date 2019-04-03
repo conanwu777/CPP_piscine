@@ -1,0 +1,225 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww14660\viewh25460\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 Cast
+\b0 \
+Extended in C++;\
+\
+\'973 videos on cast in C\
+\'97cast in C++ based on what\'92s in C\
+\
+
+\b C supports 2 kinds of casts:
+\b0 \
+1. (int) etc.\
+2. Implicit cast\
+\
+Different behaviors hidden under same syntax\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Int a = 42;\
+double b = a;     \'97\'97\'97\'97\'97\'97initialize a double with an integer\
+Double c = (double)a;\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+In memory:\
+Integers are ordered by bits\
+Doubles/floats - first bit: sign + exponent + last bit for significance\
+* copying all bits of float to int will result in different value;\
+Implicit conversion: automatically convert the bits according to type\
+\
+Hirecy between types:\
+Less accurate (smaller) type -> more accurate type \'97\'97fine\
+Opposite \'97lose precision, especially inside of a loop\
+\
+\'97good practice: always do casting explicitly when losing precision\
+Flag: -Wno - conversion: implicit conversion when losing accuracy will not compile\
+\
+
+\b Identity cast
+\b0 \
+	re-interpretation\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Float a = 420.042f;\
+\
+Void * b = &a;		\'97\'97\'97\'97lost accuracy but gained  generacity (demotion)\
+Void * c = (void*)&a;\
+\
+Int * = b 			\'97\'97\'97\'97re-interpret ad integer (can cause problems)\
+Int * f = (int*)b 		\'97\'97\'97\'97explicit when demoting\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Addresses also have hirakey \
+\'97void* most general (less accurate)\
+To re-gain accuracy\
+\'97void* is useful since we can cast it back to the info \'97should always be explicit when re-interpreate \
+\
+
+\b Type qualifier cast\
+	
+\b0 e.g. const / valto (?)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Int a = 42;\
+Int const * b = &a  \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97more accurate\
+Int const *c = (int const *) &a\
+\
+int const * d = &a\
+Int * e = d    \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97demotion, won\'92t complie\
+Int * f = (int*)d \'97\'97\'97\'97\'97\'97\'97\'97\'97fix, will compile\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+In general should never be reinterpreting qualifiers\
+\
+
+\b C++ casts:
+\b0 \
+(Currently we use syntax in C cast)\
+Parent class \'97child 1, child2\
+\'97pointers are compatible between parent and child classes\
+Child \'97> parent: upcast/promotion\
+Parent \'97> child: downcast \'97\'97\'97\'97\'97cannot be done implicitly\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Child1 a;\
+Parent * b = & a;\
+Parent * c = (Parent *) &a\
+Child2 * f = (Child 2)d \'97\'97\'97\'97\'97\'97\'97\'97\'97will compile bit won\'92t work if d was actually Child1\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+1. Inherence tree gives an order in classes\
+2. Casts between different children won\'92t work\
+\
+
+\b C++ cast Operations\
+
+\b0 	\'97all casts are conversions\
+Conversions\
+Re-interpations\
+Type qualifier changes\
+Downcast\
+Upcast\
+\
+
+\b C++ static cast:
+\b0 \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Int d = static_cast<int>(b)      \'97\'97\'97\'97\'97\'97\'97\'97\'97convert b (double) into int (explicit demotion)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Static cast: for converting simple values\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Child1 a;\
+Parent *b = &	a 		\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97-implicit upcast\
+Child2 * d = static_cast<Child2 *>(b) \'97\'97\'97\'97\'97\'97\'97explicit downcast: okay;\
+\
+Unrelated * e = static_cast<Unrelated *>(&a); \'97\'97\'97won\'92t compile because they are not in the same tree\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+The partial order only works in a class inheritance tree;\
+\
+
+\b Dynamic cast
+\b0 \
+	\'97only happens at runtime (not at compilation)\
+Only work with subtyping polymorphisms ( something has to be virtual)\
+Parent ( with virtual destructor); Child1; Child2\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Child1 a;\
+Parent * b = &a;\
+Child1 * c = dynamic_cast<Child1*>(b); \'97\'97\'97\'97\'97dynamic cast, will return NULL if not possible\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Std::bad_cast &bc:\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Try\
+\{\
+	Child2 & d = dynamic_cast<Child2 &>(*b)\
+	\\\\ do something\
+\}\
+catch( std:: bad_cast &bc)\
+\{\
+	\'85bc.what()\'85\
+\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b Reinterpret cast
+\b0 \
+	reinterpret any address with any other address (no checks by complier)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Int * c = reinterpret_cast<int*>(b);\
+Int & d = reinterpret_cas<int &>(b);\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b Const cast\
+
+\b0 	change type qualifiers\
+Const values are higher than regular\
+Const \'97> non-const: demotion, won\'92t compile implicitly \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Int * d = const_cast<int*>(b) \'97\'97\'97\'97allows b to change from const to non-const\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+* should never be doing that if one can change the source code\
+\
+
+\b Type cast operators
+\b0 \
+can define how class instances cast to various types\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Class Foo\{\
+Float _v\
+Operator float()	\{return this\'97>_v; \}\
+Operator int()		\{return static_cast<int>(_v);\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+The operators allow implicit cast of class instances:\
+Foo a;\
+Float b = a;\
+	\
+
+\b Explicit (keyword)
+\b0 \
+	for casts, we have \'93< >\'94 \'97will cover tomorrow\
+Constructors are conceptually similar to casts, but reversed\
+Classes A, B, \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+C(A const & xx )) \{return;\}		\'97\'97essentially converting A\'97>C\
+Explicit 	C(B const & xx )) \{return;\}\
+\
+Void f(C const & xx) \{\};\
+\
+f(A());		\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97will compile as f(C(A()))\
+f(B());		\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97will not compile our to the \'93explicit\'94\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b Options table
+\b0 \
+\
+
+\b Conversion:
+\b0  Implicit, static\
+
+\b Reint.
+\b0 	re-int\
+
+\b Upcast: 
+\b0 Implicit, static, dynamic, re-int\
+
+\b Downcast: 
+\b0 static, dynamic, re-int\
+
+\b Type qualifier:
+\b0  const\
+\
+* dynamic cast only works if RTTI enabled (one function is virtual)\
+\
+
+\b Semantic check: 
+\b0 Implicit, static, dynamic\
+
+\b Reliable at run-time:
+\b0  implicit, dynamic \'97\'97\'97\'97static will allow casting one child to another\
+
+\b Tested at runtime: 
+\b0 dynamic\
+\
+\
+}

@@ -1,0 +1,158 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww14540\viewh25460\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 Templates
+\b0 \
+	expressiveness, potentially lots of errors\
+\
+1. C: parametric macros\
+2. Templates\
+3. Default type\
+4. Specialization\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 C: parametric macros
+\b0 \
+\
+Problem: in C one cannot take different types (int/float etc.)\
+Solution: parametric macros:\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+#define MAX(x, y) (((x) >= (y)) : (x) : (y))\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+*Pre-processor substitutes the symbols\
+	-values of x, y will be calculated twice\
+Edge effect:\
+	long computing time, input-output etc; will be performed twice;\
+\
+Problem: Linked list cannot have different types at the same time;\
+Solution: cast to (void*)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Struct list_s \{\
+	void* content;\
+	size_t size;\
+	struct list_s * next\
+\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+* need to know the size of the data\
+* need to un-reference each time, can be slow for millions of computations\
+Generic code <\'97> more computation at run time\
+Read about linked list created by XXX\
+\
+Templates: make compiler generate the code for different types\
+\
+
+\b Template: syntax
+\b0 \
+Want: max function working with int, floats, char etc.\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+template < typename T >  \'97\'97\'97\'97\'97\'97\'97\'97\'97declare type\
+\
+T max(T x, T y) \{		\'97\'97\'97\'97\'97\'97\'97\'97\'97Global \'92T\'92 type\
+	return ( x  >= y ? x : y );\
+\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+*when < is overloaded with classes, we should take reference to avoid copying\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+template < typename T > \
+\
+T const & max(T const & x, T const & y) \{ \'97\'97\'97const T reference, since function does not change parameters\
+	return ( x  >= y ? x : y );\
+\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+*need the compiler to instantiate the type:\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	max<int>(a, b)	\'97\'97\'97\'97\'97\'97\'97explicit instantiation (preferred)\
+	max(a, b)		\'97\'97\'97\'97\'97\'97\'97implicit instanciation\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Data structures (e.g. list): \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+template < typename T > \
+\
+Class list \{\
+	public:\
+		list<T> (T const & content) \{\
+			xxxxx;\}\
+		list<T> (list<T> const & list) \{\
+			xxxxx;\}\
+		~list<T> ();\
+	priviate:\
+		T 	_content;\
+		list<T> * _next;\
+\};\
+\
+To use:\
+	list<int>	a(42);\
+	list<float>	b(3.14f);\
+	list<list<int>>		c(a);	\'97\'97\'97\'97\'97list of list of integers\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+* can define two types at the same time \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	template < typename T, typename U>\
+	list<int, float>		\'97\'97\'97\'97\'97\'97\'97\'97instantiate\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+STL: standard template library\
+\
+
+\b Default type
+\b0 \
+	pass default values to templates\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+file: Vertex.class.tpp\
+\
+Template <typename T = float > 	\'97\'97\'97\'97\'97\'97\'97defining the default type to be float (often)\
+\
+Class Vertex \{\
+	public:\
+		Vertex( T const & x,  T const & y,  T const & z) : _x(x), _y(y), _z(z) \{\}\
+		~Vertex(void)\{\}\
+\}\
+\
+Template <typename T>		\'97\'97\'97\'97\'97\'97\'97templated overload\
+Std::ostream & operator<< (std::ostream & o, Vertex<T> const & v) \{\
+	std::cout.presision(1);	\'97\'97\'97\'97\'97\'97\'97\'97precision wont apply for int\
+	o << setiosflags(std::iOS::fixed);\
+	// print out the three values\
+\}\
+Vertex< int >		v1(xx, xx, xx);	\'97\'97\'97\'97will be instantiated with int\
+Vertex<  >		v1(xx, xx, xx);	\'97\'97\'97\'97will be instantiated with default\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\b Specialization:
+\b0 \
+	\'97so far our code is identical for each type in the template\
+	\'97can specialize partially or fully in classes\
+	\'97can only specialize functions partially\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+template < typename T, typename U>\
+\
+Class Pair \{\
+	pair< T,  U>( T r, U l)		\'97\'97\'97\'97\'97\'97\'97\'97generic\
+\
+template < typename U>\
+Class Pair \{\
+	pair< int,  U>(int r, U l)		\'97\'97\'97\'97\'97\'97\'97\'97partial specialize with T = int;\
+	// write the specialized version of the class;\
+\
+template < >\
+Class Pair \{\
+	pair< int,  int>( int r, int l)		\'97\'97\'97\'97\'97\'97\'97\'97Full specialization (only kicks in when T, U are those types)\
+	// write the specialized version of the class;\
+\
+Std::ostream & operator<<( Std::ostream & o, Pair<bool, bool> const & p) \{\
+	o << std::boolalpha << // print out the values    \'97\'97\'97\'97\'97\'97\'97specialized overload (instead of Pair<T, U>)\
+\}\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Meta-programming: write the whole code with pre-processor\
+\
+\
+\
+\
+}
